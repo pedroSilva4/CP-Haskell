@@ -811,19 +811,23 @@ func (n,m) = ((div (m-n) 2) + n,((n,(div (m-n) 2) + n-1),(div (m-n) 2 + n+1,m)))
 \subsection*{Secção \ref{sec:SList}}
 \begin{code}
 inSList :: Either a (a1, SList a1 a) -> SList a1 a
-inSList = undefined
+inSList = either (Sent) (Cons)
 
 outSList :: SList b a -> Either a (b, SList b a)
-outSList = undefined
+outSList (Sent a) = Left (a)
+outSList (Cons (b,sl)) = Right (b,sl)
+
+recSList g = id -|- (id >< g)
 
 anaSList :: (c -> Either a (b, c)) -> c -> SList b a
-anaSList = undefined
+anaSList g = inSList . (recSList (anaSList g) ) . g
+
 
 cataSList :: (Either b (a, d) -> d) -> SList a b -> d
-cataSList = undefined
+cataSList g = g . (recSList(cataSList g)) . outSList
 
 hyloSList :: (Either b (d, c) -> c) -> (a -> Either b (d, a)) -> a -> c
-hyloSList = undefined
+hyloSList h g  = cataSList h . anaSList g
 
 mgen :: Ord a => ([a], [a]) -> Either [a] (a, ([a], [a]))
 mgen = undefined
@@ -861,17 +865,13 @@ geraSierp = curry(anaTLTree(geraSierpinPair))
 
 geraSierpinPair :: (Tri,Int) -> Either Tri (((Tri,Int)),(((Tri,Int)),((Tri,Int))))
 geraSierpinPair (((x,y),z),a)  | a==0	= i1 ((x,y),z)
-														 | otherwise = i2 (  (((x,y),h),(a-1)),
+														 	 | otherwise = i2 (  (((x,y),h),(a-1)),
 																								   (
 																											(((x+h,y),h),(a-1)),
 																									  	(((x,y+h),h),(a-1))
 																									 )
 																							  )
-															 where h = (quot z 2)
-
-
-
---ts = geraSierp tri 5 where tri = ((0, 0), 256)
+															   where h = (quot z 2)
 
 apresentaSierp :: TLTree Tri-> [Tri]
 apresentaSierp  = cataTLTree (either singl conc)
