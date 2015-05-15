@@ -894,8 +894,11 @@ data TLTree a = L a | N (TLTree a,(TLTree a,TLTree a)) deriving (Eq,Show)
 
 \subsection*{Secção \ref{sec:monads}}
 Defina
+\newline
 \begin{code}
-gene = undefined
+gene (Left ())= D[(["stop"],0.90),([""],0.10)]
+gene (Right (a,t))= D [([a]++t,0.95), (t,0.05)]
+
 \end{code}
 e responda ao problema do enunciado aqui.
 
@@ -905,6 +908,7 @@ Defina
 parBTreeMap = undefined
 \end{code}
 e apresente aqui os resultados das suas experiências com essa função.
+
 
 %----------------- Fim do anexo cpm soluções propostas -------------------------%
 
