@@ -689,8 +689,9 @@ main = getArgs >>= cond (not . null) exemp_or_exer errInvArgs
         execExemp = cond isPar execExempPar execExempSeq
         exer = cond (((==) 3) . length) execExer errInvArgs
         execExer = cond isPar execExerPar execExerSeq
-        execExempSeq = const (putStrLn . show . (map fib) $ [20..30])
-        execExempPar = const (putStrLn . show . runEval . (parmap fib) $ [20..30])
+        execExempSeq = const (putStrLn . show . (fmap fib) $ abpe(20,40) )
+        execExempPar = const (putStrLn . show . runEval . (parBTreeMap fib) $ abpe(20,40))
+
 \end{code}
 
 \section{Bibliotecas e código auxiliar}
@@ -830,7 +831,10 @@ hyloSList :: (Either b (d, c) -> c) -> (a -> Either b (d, a)) -> a -> c
 hyloSList h g  = cataSList h . anaSList g
 
 mgen :: Ord a => ([a], [a]) -> Either [a] (a, ([a], [a]))
-mgen = undefined
+mgen (l,[]) = i1(l)
+mgen ([],a:t) = i2 (a,([],t))
+mgen (a:ts,l)= i2 (a,(ts,l))
+
 \end{code}
 
 \subsection*{Secção \ref{sec:sierp}}
@@ -854,7 +858,17 @@ hyloTLTree a c = cataTLTree a . anaTLTree c
 tipsTLTree = cataTLTree (either singl conc)
         where conc(l,(r,t))= l ++ r ++ t
 
-invTLTree = cataTLTree (inTLTree . (id -|- (\(a,(b,c))->(c,(b,a)))))
+
+{-
+invTLTree inverte o ponto nas suas coordenadas e mantem os ramos das arvores
+-}
+invTLTree = cataTLTree (inTLTree . ( (\((x,y),z)->((-x,-y),-z)) -|- id ))
+
+
+{-
+invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções de inversão para outros tipos de árvore
+-}
+invTLTree' = cataTLTree (inTLTree . ( id-|- (\(a,(b,c))->(a,(b,c)))  ))
 
 depthTLTree = cataTLTree (either (const 1) (succ.(uncurry max).(id >< (uncurry max))))
 
@@ -902,13 +916,44 @@ gene (Right (a,t))= D [([a]++t,0.95), (t,0.05)]
 \end{code}
 e responda ao problema do enunciado aqui.
 
+\begin{Verbatim}
+*Main> transmitir (words "vamos atacar hoje")
+["vamos","atacar","hoje","stop"]  77.2%
+    ["vamos","atacar","hoje",""]   8.6%
+        ["atacar","hoje","stop"]   4.1%
+       ["vamos","atacar","stop"]   4.1%
+         ["vamos","hoje","stop"]   4.1%
+            ["atacar","hoje",""]   0.5%
+           ["vamos","atacar",""]   0.5%
+             ["vamos","hoje",""]   0.5%
+               ["atacar","stop"]   0.2%
+                 ["hoje","stop"]   0.2%
+                ["vamos","stop"]   0.2%
+                   ["atacar",""]   0.0%
+                    ["vamos",""]   0.0%
+                     ["hoje",""]   0.0%
+                        ["stop"]   0.0%
+                            [""]   0.0%
+\end{Verbatim}
+
+A probabilidade da palavra ''atacar'' da mensagem ''Vamos atacar hoje''
+se perder é de 4.1\%, enquanto que a probabilidade de faltar a palavra ''stop'' é de 8.6\%.
+
+Por fim, a probabilidade da mensagem seguir perfeita é de 77.2\%.
+
 \subsection*{Secção \ref{sec:parBTreeMap}}
 Defina
 \begin{code}
-parBTreeMap = undefined
+parBTreeMap f Empty = return Empty
+parBTreeMap f (Node(a,(l,r)) )= do
+ 								a' <- rpar (f a)
+								l' <- parBTreeMap f l
+								r' <- parBTreeMap f r
+								return (Node (a',(l',r')))
 \end{code}
 e apresente aqui os resultados das suas experiências com essa função.
 
+Com esta função foram feitos diferentes
 
 %----------------- Fim do anexo cpm soluções propostas -------------------------%
 

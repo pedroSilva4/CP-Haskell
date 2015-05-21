@@ -1488,7 +1488,11 @@ outras funções auxiliares que sejam necessárias.
 \\[\blanklineskip]%
 \>[B]{}\Varid{mgen}\mathbin{::}\Conid{Ord}\;\Varid{a}\Rightarrow ([\mskip1.5mu \Varid{a}\mskip1.5mu],[\mskip1.5mu \Varid{a}\mskip1.5mu])\to \Conid{Either}\;[\mskip1.5mu \Varid{a}\mskip1.5mu]\;(\Varid{a},([\mskip1.5mu \Varid{a}\mskip1.5mu],[\mskip1.5mu \Varid{a}\mskip1.5mu])){}\<[E]%
 \\
-\>[B]{}\Varid{mgen}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{mgen}\;(\Varid{l},[\mskip1.5mu \mskip1.5mu])\mathrel{=}i_1\;(\Varid{l}){}\<[E]%
+\\
+\>[B]{}\Varid{mgen}\;([\mskip1.5mu \mskip1.5mu],\Varid{a}\mathbin{:}\Varid{t})\mathrel{=}i_2\;(\Varid{a},([\mskip1.5mu \mskip1.5mu],\Varid{t})){}\<[E]%
+\\
+\>[B]{}\Varid{mgen}\;(\Varid{a}\mathbin{:}\Varid{ts},\Varid{l})\mathrel{=}i_2\;(\Varid{a},(\Varid{ts},\Varid{l})){}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
@@ -1503,6 +1507,7 @@ outras funções auxiliares que sejam necessárias.
 \column{23}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{32}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{41}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{70}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{81}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{122}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{124}{@{}>{\hspre}l<{\hspost}@{}}%
@@ -1539,7 +1544,16 @@ outras funções auxiliares que sejam necessárias.
 \>[B]{}\hsindent{9}{}\<[9]%
 \>[9]{}\mathbf{where}\;\mathsf{conc}\;(\Varid{l},(\Varid{r},\Varid{t}))\mathrel{=}\Varid{l}\plus \Varid{r}\plus \Varid{t}{}\<[E]%
 \\[\blanklineskip]%
-\>[B]{}\Varid{invTLTree}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp (\Varid{id}+(\lambda (\Varid{a},(\Varid{b},\Varid{c}))\to (\Varid{c},(\Varid{b},\Varid{a}))))){}\<[E]%
+\>[B]{}\mbox{\commentbegin 
+invTLTree inverte o ponto nas suas coordenadas e mantem os ramos das arvores \commentend}{}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{invTLTree}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp ((\lambda ((\Varid{x},\Varid{y}),\Varid{z})\to ((\mathbin{-}\Varid{x},\mathbin{-}\Varid{y}),\mathbin{-}\Varid{z}))+\Varid{id})){}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\mbox{\commentbegin 
+invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções de inversão para outros tipos de árvore \commentend}{}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{invTLTree'}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp (\Varid{id}+(\lambda (\Varid{a},(\Varid{b},\Varid{c}))\to (\Varid{a},(\Varid{b},\Varid{c}))){}\<[70]%
+\>[70]{})){}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{depthTLTree}\mathrel{=}\Varid{cataTLTree}\;\alt{\underline{\mathrm{1}}}{\Varid{succ}\comp \uncurry{\Varid{max}}\comp (\Varid{id}\times\uncurry{\Varid{max}})}{}\<[E]%
 \\[\blanklineskip]%
@@ -1616,6 +1630,31 @@ Defina
 \ColumnHook
 \end{hscode}\resethooks
 e responda ao problema do enunciado aqui.
+
+\begin{Verbatim}
+*Main> transmitir (words "vamos atacar hoje")
+["vamos","atacar","hoje","stop"]  77.2%
+    ["vamos","atacar","hoje",""]   8.6%
+        ["atacar","hoje","stop"]   4.1%
+       ["vamos","atacar","stop"]   4.1%
+         ["vamos","hoje","stop"]   4.1%
+            ["atacar","hoje",""]   0.5%
+           ["vamos","atacar",""]   0.5%
+             ["vamos","hoje",""]   0.5%
+               ["atacar","stop"]   0.2%
+                 ["hoje","stop"]   0.2%
+                ["vamos","stop"]   0.2%
+                   ["atacar",""]   0.0%
+                    ["vamos",""]   0.0%
+                     ["hoje",""]   0.0%
+                        ["stop"]   0.0%
+                            [""]   0.0%
+\end{Verbatim}
+
+A probabilidade da palavra ''atacar'' da mensagem ''Vamos atacar hoje''
+se perder é de 4.1\%, enquanto que a probabilidade de faltar a palavra ''stop'' é de 8.6\%.
+
+Por fim, a probabilidade da mensagem seguir perfeita é de 77.2\%.
 
 \subsection*{Secção \ref{sec:parBTreeMap}}
 Defina
