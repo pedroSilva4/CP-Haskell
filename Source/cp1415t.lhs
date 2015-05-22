@@ -689,8 +689,8 @@ main = getArgs >>= cond (not . null) exemp_or_exer errInvArgs
         execExemp = cond isPar execExempPar execExempSeq
         exer = cond (((==) 3) . length) execExer errInvArgs
         execExer = cond isPar execExerPar execExerSeq
-        execExempSeq = const (putStrLn . show . (fmap fib) $ abpe(20,40) )
-        execExempPar = const (putStrLn . show . runEval . (parBTreeMap fib) $ abpe(20,40))
+        execExempSeq = const (putStrLn . show . (fmap fib) $ abpe(20,30) )
+        execExempPar = const (putStrLn . show . runEval . (parBTreeMap fib) $ abpe(20,30))
 
 \end{code}
 
@@ -801,11 +801,11 @@ balance = anaLTree(lsplit).tips
 \begin{code}
 
 qsplit :: Integral a => (a, a) -> Either () (a, ((a, a), (a, a)))
---qsplit = undefined
 qsplit = cond (\(a,b)-> a<=b && a>=0 && b>0) (i2.func) (i1.(!))
 
 func :: Integral a =>(a,a)->(a,((a,a), (a,a)))
-func (n,m) = ((div (m-n) 2) + n,((n,(div (m-n) 2) + n-1),(div (m-n) 2 + n+1,m)))
+func (n,m) = (point,  ((n,point-1),(point+1,m)))
+							where point = (div (m-n) 2) + n
 
 \end{code}
 
@@ -868,7 +868,7 @@ invTLTree = cataTLTree (inTLTree . ( (\((x,y),z)->((-x,-y),-z)) -|- id ))
 {-
 invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções de inversão para outros tipos de árvore
 -}
-invTLTree' = cataTLTree (inTLTree . ( id-|- (\(a,(b,c))->(a,(b,c)))  ))
+invTLTree' = cataTLTree (inTLTree . ( id-|- (\(a,(b,c))->(c,(b,a)))  ))
 
 depthTLTree = cataTLTree (either (const 1) (succ.(uncurry max).(id >< (uncurry max))))
 
