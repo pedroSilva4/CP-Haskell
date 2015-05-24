@@ -1277,10 +1277,10 @@ uma melhor distinção entre as duas versões.
 \>[9]{}\Varid{execExer}\mathrel{=}\mcond{\Varid{isPar}}{\Varid{execExerPar}}{\Varid{execExerSeq}}{}\<[E]%
 \\
 \>[6]{}\hsindent{3}{}\<[9]%
-\>[9]{}\Varid{execExempSeq}\mathrel{=}\underline{(\Varid{putStrLn}\comp \Varid{show}\comp (\Varid{map}\;\Varid{fib})\mathbin{\$}[\mskip1.5mu \mathrm{20}\mathinner{\ldotp\ldotp}\mathrm{30}\mskip1.5mu])}{}\<[E]%
+\>[9]{}\Varid{execExempSeq}\mathrel{=}\underline{(\Varid{putStrLn}\comp \Varid{show}\comp (\Varid{fmap}\;\Varid{fib})\mathbin{\$}\Varid{abpe}\;(\mathrm{20},\mathrm{30}))}{}\<[E]%
 \\
 \>[6]{}\hsindent{3}{}\<[9]%
-\>[9]{}\Varid{execExempPar}\mathrel{=}\underline{(\Varid{putStrLn}\comp \Varid{show}\comp \Varid{runEval}\comp (\Varid{parmap}\;\Varid{fib})\mathbin{\$}[\mskip1.5mu \mathrm{20}\mathinner{\ldotp\ldotp}\mathrm{30}\mskip1.5mu])}{}\<[E]%
+\>[9]{}\Varid{execExempPar}\mathrel{=}\underline{(\Varid{putStrLn}\comp \Varid{show}\comp \Varid{runEval}\comp (\Varid{parBTreeMap}\;\Varid{fib})\mathbin{\$}\Varid{abpe}\;(\mathrm{20},\mathrm{30}))}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
@@ -1443,16 +1443,20 @@ outras funções auxiliares que sejam necessárias.
 \subsection*{Secção \ref{sec:BTree}}
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{23}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{57}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{qsplit}\mathbin{::}\Conid{Integral}\;\Varid{a}\Rightarrow (\Varid{a},\Varid{a})\to \Conid{Either}\;()\;(\Varid{a},((\Varid{a},\Varid{a}),(\Varid{a},\Varid{a}))){}\<[E]%
 \\
-\>[B]{}\mbox{\onelinecomment qsplit = undefined}{}\<[E]%
-\\
-\>[B]{}\Varid{qsplit}\mathrel{=}\mcond{(\lambda (\Varid{a},\Varid{b})\to \Varid{a}\leq \Varid{b}\mathrel{\wedge}\Varid{a}\geq \mathrm{0}\mathrel{\wedge}\Varid{b}\mathbin{>}\mathrm{0})}{(i_2\comp \Varid{func})}{(i_1\comp (\mathbin{!}))}{}\<[E]%
+\>[B]{}\Varid{qsplit}\mathrel{=}\mcond{(\lambda (\Varid{a},\Varid{b})\to \Varid{a}\leq \Varid{b}\mathrel{\wedge}\Varid{b}\not\equiv \mathrm{0})}{(i_2\comp \Varid{func})}{(i_1\comp (\mathbin{!}))}{}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{func}\mathbin{::}\Conid{Integral}\;\Varid{a}\Rightarrow (\Varid{a},\Varid{a})\to (\Varid{a},((\Varid{a},\Varid{a}),(\Varid{a},\Varid{a}))){}\<[E]%
 \\
-\>[B]{}\Varid{func}\;(\Varid{n},\Varid{m})\mathrel{=}(\Varid{m}\mathbin{-}\Varid{n}\div \mathrm{2}\mathbin{+}\Varid{n},((\Varid{n},\Varid{m}\mathbin{-}\Varid{n}\div \mathrm{2}\mathbin{+}\Varid{n}\mathbin{-}\mathrm{1}),(\Varid{m}\mathbin{-}\Varid{n}\div \mathrm{2}\mathbin{+}\Varid{n}\mathbin{+}\mathrm{1},\Varid{m}))){}\<[E]%
+\>[B]{}\Varid{func}\;(\Varid{n},\Varid{m})\mathrel{=}(\Varid{point},{}\<[23]%
+\>[23]{}((\Varid{n},\Varid{point}\mathbin{-}\mathrm{1}),(\Varid{point}\mathbin{+}\mathrm{1},\Varid{m}))){}\<[E]%
+\\
+\>[23]{}\hsindent{34}{}\<[57]%
+\>[57]{}\mathbf{where}\;\Varid{point}\mathrel{=}\Varid{m}\mathbin{-}\Varid{n}\div \mathrm{2}\mathbin{+}\Varid{n}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
@@ -1460,6 +1464,8 @@ outras funções auxiliares que sejam necessárias.
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{16}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{30}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{66}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{inSList}\mathbin{::}\Conid{Either}\;\Varid{a}\;(\Varid{a1},\Conid{SList}\;\Varid{a1}\;\Varid{a})\to \Conid{SList}\;\Varid{a1}\;\Varid{a}{}\<[E]%
 \\
@@ -1490,9 +1496,13 @@ outras funções auxiliares que sejam necessárias.
 \\
 \>[B]{}\Varid{mgen}\;(\Varid{l},[\mskip1.5mu \mskip1.5mu])\mathrel{=}i_1\;(\Varid{l}){}\<[E]%
 \\
-\>[B]{}\Varid{mgen}\;([\mskip1.5mu \mskip1.5mu],\Varid{a}\mathbin{:}\Varid{t})\mathrel{=}i_2\;(\Varid{a},([\mskip1.5mu \mskip1.5mu],\Varid{t})){}\<[E]%
+\>[B]{}\Varid{mgen}\;([\mskip1.5mu \mskip1.5mu],\Varid{l})\mathrel{=}i_1\;(\Varid{l}){}\<[E]%
 \\
-\>[B]{}\Varid{mgen}\;(\Varid{a}\mathbin{:}\Varid{ts},\Varid{l})\mathrel{=}i_2\;(\Varid{a},(\Varid{ts},\Varid{l})){}\<[E]%
+\>[B]{}\Varid{mgen}\;(\Varid{a}\mathbin{:}\Varid{ts},\Varid{b}\mathbin{:}\Varid{bs})\mid (\Varid{a}\leq \Varid{b}){}\<[30]%
+\>[30]{}\mathrel{=}i_2\;(\Varid{a},(\Varid{ts},(\Varid{b}\mathbin{:}\Varid{bs}))){}\<[E]%
+\\
+\>[30]{}\hsindent{36}{}\<[66]%
+\>[66]{}\mid \Varid{otherwise}\mathrel{=}i_2\;(\Varid{b},(\Varid{a}\mathbin{:}\Varid{ts},\Varid{bs})){}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
@@ -1507,7 +1517,6 @@ outras funções auxiliares que sejam necessárias.
 \column{23}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{32}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{41}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{70}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{81}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{122}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{124}{@{}>{\hspre}l<{\hspost}@{}}%
@@ -1552,8 +1561,7 @@ invTLTree inverte o ponto nas suas coordenadas e mantem os ramos das arvores \co
 \>[B]{}\mbox{\commentbegin 
 invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções de inversão para outros tipos de árvore \commentend}{}\<[E]%
 \\[\blanklineskip]%
-\>[B]{}\Varid{invTLTree'}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp (\Varid{id}+(\lambda (\Varid{a},(\Varid{b},\Varid{c}))\to (\Varid{a},(\Varid{b},\Varid{c}))){}\<[70]%
-\>[70]{})){}\<[E]%
+\>[B]{}\Varid{invTLTree'}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp (\Varid{id}+(\lambda (\Varid{a},(\Varid{b},\Varid{c}))\to (\Varid{c},(\Varid{b},\Varid{a}))))){}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{depthTLTree}\mathrel{=}\Varid{cataTLTree}\;\alt{\underline{\mathrm{1}}}{\Varid{succ}\comp \uncurry{\Varid{max}}\comp (\Varid{id}\times\uncurry{\Varid{max}})}{}\<[E]%
 \\[\blanklineskip]%
@@ -1660,12 +1668,28 @@ Por fim, a probabilidade da mensagem seguir perfeita é de 77.2\%.
 Defina
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{65}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{parBTreeMap}\mathrel{=}\bot {}\<[E]%
+\>[B]{}\Varid{parBTreeMap}\;\Varid{f}\;\Conid{Empty}\mathrel{=}\Varid{return}\;\Conid{Empty}{}\<[E]%
+\\
+\>[B]{}\Varid{parBTreeMap}\;\Varid{f}\;(\Conid{Node}\;(\Varid{a},(\Varid{l},\Varid{r})))\mathrel{=}\mathbf{do}{}\<[E]%
+\\
+\>[B]{}\hsindent{65}{}\<[65]%
+\>[65]{}\Varid{a'}\leftarrow \Varid{rpar}\;(\Varid{f}\;\Varid{a}){}\<[E]%
+\\
+\>[B]{}\hsindent{65}{}\<[65]%
+\>[65]{}\Varid{l'}\leftarrow \Varid{parBTreeMap}\;\Varid{f}\;\Varid{l}{}\<[E]%
+\\
+\>[B]{}\hsindent{65}{}\<[65]%
+\>[65]{}\Varid{r'}\leftarrow \Varid{parBTreeMap}\;\Varid{f}\;\Varid{r}{}\<[E]%
+\\
+\>[B]{}\hsindent{65}{}\<[65]%
+\>[65]{}\Varid{return}\;(\Conid{Node}\;(\Varid{a'},(\Varid{l'},\Varid{r'}))){}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 e apresente aqui os resultados das suas experiências com essa função.
 
+Com esta função foram feitos diferentes
 
 %----------------- Fim do anexo cpm soluções propostas -------------------------%
 

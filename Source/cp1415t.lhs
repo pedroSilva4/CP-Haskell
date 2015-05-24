@@ -801,7 +801,7 @@ balance = anaLTree(lsplit).tips
 \begin{code}
 
 qsplit :: Integral a => (a, a) -> Either () (a, ((a, a), (a, a)))
-qsplit = cond (\(a,b)-> a<=b && a>=0 && b>0) (i2.func) (i1.(!))
+qsplit = cond (\(a,b)-> a<=b && b/=0) (i2.func) (i1.(!))
 
 func :: Integral a =>(a,a)->(a,((a,a), (a,a)))
 func (n,m) = (point,  ((n,point-1),(point+1,m)))
@@ -832,8 +832,9 @@ hyloSList h g  = cataSList h . anaSList g
 
 mgen :: Ord a => ([a], [a]) -> Either [a] (a, ([a], [a]))
 mgen (l,[]) = i1(l)
-mgen ([],a:t) = i2 (a,([],t))
-mgen (a:ts,l)= i2 (a,(ts,l))
+mgen ([],l) = i1(l)
+mgen (a:ts,b:bs) | (a <= b)  = i2 (a,(ts,(b:bs)))
+								 | otherwise = i2 (b,(a:ts,bs))
 
 \end{code}
 
@@ -868,7 +869,7 @@ invTLTree = cataTLTree (inTLTree . ( (\((x,y),z)->((-x,-y),-z)) -|- id ))
 {-
 invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções de inversão para outros tipos de árvore
 -}
-invTLTree' = cataTLTree (inTLTree . ( id-|- (\(a,(b,c))->(c,(b,a)))  ))
+invTLTree' = cataTLTree (inTLTree . ( id -|- (\(a,(b,c))->(c,(b,a))) ))
 
 depthTLTree = cataTLTree (either (const 1) (succ.(uncurry max).(id >< (uncurry max))))
 
