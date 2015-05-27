@@ -689,8 +689,8 @@ main = getArgs >>= cond (not . null) exemp_or_exer errInvArgs
         execExemp = cond isPar execExempPar execExempSeq
         exer = cond (((==) 3) . length) execExer errInvArgs
         execExer = cond isPar execExerPar execExerSeq
-        execExempSeq = const (putStrLn . show . (fmap fib) $ abpe(20,30) )
-        execExempPar = const (putStrLn . show . runEval . (parBTreeMap fib) $ abpe(20,30))
+        execExempSeq = const (putStrLn . show . (fmap fib) $ abpe(20,40) )
+        execExempPar = const (putStrLn . show . runEval . (parBTreeMap fib) $ abpe(20,40))
 
 \end{code}
 
@@ -813,23 +813,34 @@ func (n,m) = (point,  ((n,point-1),(point+1,m)))
 \begin{code}
 inSList :: Either a (a1, SList a1 a) -> SList a1 a
 inSList = either (Sent) (Cons)
+\end{code}
 
+\begin{code}
 outSList :: SList b a -> Either a (b, SList b a)
 outSList (Sent a) = Left (a)
 outSList (Cons (b,sl)) = Right (b,sl)
+\end{code}
 
+\begin{code}
 recSList g = id -|- (id >< g)
+\end{code}
 
+\begin{code}
 anaSList :: (c -> Either a (b, c)) -> c -> SList b a
 anaSList g = inSList . (recSList (anaSList g) ) . g
+\end{code}
 
-
+\begin{code}
 cataSList :: (Either b (a, d) -> d) -> SList a b -> d
 cataSList g = g . (recSList(cataSList g)) . outSList
+\end{code}
 
+\begin{code}
 hyloSList :: (Either b (d, c) -> c) -> (a -> Either b (d, a)) -> a -> c
 hyloSList h g  = cataSList h . anaSList g
+\end{code}
 
+\begin{code}
 mgen :: Ord a => ([a], [a]) -> Either [a] (a, ([a], [a]))
 mgen (l,[]) = i1(l)
 mgen ([],l) = i1(l)
@@ -842,65 +853,117 @@ mgen (a:ts,b:bs) | (a <= b)  = i2 (a,(ts,(b:bs)))
 
 \begin{code}
 inTLTree = either (L) (N)
+\end{code}
 
+\begin{code}
 outTLTree (L a)    = i1 a
 outTLTree (N (t1,(t2,t3)) )= i2 (t1,(t2,t3))
+\end{code}
 
+\begin{code}
 baseTLTree g f = g -|- ( f >< (f >< f))
+\end{code}
 
+\begin{code}
 recTLTree f = id -|-  (f ><(f><f))
+\end{code}
 
+\begin{code}
 cataTLTree a = a . (recTLTree (cataTLTree a)) . outTLTree
+\end{code}
 
+\begin{code}
 anaTLTree f = inTLTree . (recTLTree (anaTLTree f) ) . f
+\end{code}
 
+\begin{code}
 hyloTLTree a c = cataTLTree a . anaTLTree c
+\end{code}
 
+\begin{code}
 tipsTLTree = cataTLTree (either singl conc)
         where conc(l,(r,t))= l ++ r ++ t
 
+\end{code}
 
+\begin{code}
 {-
 invTLTree inverte o ponto nas suas coordenadas e mantem os ramos das arvores
 -}
-invTLTree = cataTLTree (inTLTree . ( (\((x,y),z)->((-x,-y),-z)) -|- id ))
+invTLTree = cataTLTree (inTLTree . ( invertPoint -|- id ))
 
+invertPoint :: Tri -> Tri
+invertPoint = ((negate><negate)><(negate))
+\end{code}
 
+\begin{code}
 {-
 invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções de inversão para outros tipos de árvore
 -}
-invTLTree' = cataTLTree (inTLTree . ( id -|- (\(a,(b,c))->(c,(b,a))) ))
+invTLTree' = cataTLTree (inTLTree . ( id -|- swapTLTree))
 
+swapTLTree :: (TLTree a,(TLTree b,TLTree c)) -> (TLTree c,(TLTree b,TLTree a))
+swapTLTree (a,(c,d))= (d,(c,a))
+\end{code}
+
+\begin{code}
 depthTLTree = cataTLTree (either (const 1) (succ.(uncurry max).(id >< (uncurry max))))
+\end{code}
 
+\begin{code}
 geraSierp :: Tri -> Int -> TLTree Tri
 geraSierp = curry(anaTLTree(geraSierpinPair))
 
+geraSierpinPair :: (Tri,Int) -> Either Tri ((Tri,Int), ((Tri,Int),(Tri,Int)) )
+geraSierpinPair = cond ((==0).p2) (i1.p1) (i2.geraRec)
 
 
-geraSierpinPair :: (Tri,Int) -> Either Tri (((Tri,Int)),(((Tri,Int)),((Tri,Int))))
-geraSierpinPair (((x,y),z),a)  | a==0	= i1 ((x,y),z)
-														 	 | otherwise = i2 (  (((x,y),h),(a-1)),
-																								   (
-																											(((x+h,y),h),(a-1)),
-																									  	(((x,y+h),h),(a-1))
-																									 )
-																							  )
-															   where h = (quot z 2)
 
+geraRec :: (Tri,Int) -> ((Tri,Int), ((Tri,Int),(Tri,Int)) )
+geraRec (t,a) = ((decSize t , a-1) , ( (decAndxMove t, a-1 ) , (decAndyMove t , a-1) ))
+
+decSize :: Tri -> Tri
+decSize ((a,b),c) = ((a,b),dec)
+										 where dec = quot c 2
+decAndxMove :: Tri -> Tri
+decAndxMove ((a,b),c) =  ( (a+dec,b),dec )
+							 						where dec = quot c 2
+
+decAndyMove :: Tri -> Tri
+decAndyMove ((a,b),c) =  ( (a , b+dec) ,  dec)
+							 					 where dec = quot c 2
+\end{code}
+
+
+
+\begin{code}
 apresentaSierp :: TLTree Tri-> [Tri]
 apresentaSierp  = cataTLTree (either singl conc)
 										where conc(l,(r,t)) = l ++ r ++ t
 
+\end{code}
 
+\begin{code}
 countTLTree :: TLTree b -> Int
 countTLTree = cataTLTree (either (const 1) ((uncurry (+)).(id >< (uncurry (+)) ) ) )
+\end{code}
 
+\begin{code}
 draw = render html where
        html = rep dados
 
-rep = finalize. concat. map(drawTriangle) . apresentaSierp.uncurry(geraSierp)
+rep = finalize. concat. map(drawPiramide) . apresentaSierp.uncurry(geraSierp)
+
+
+
+
+drawPiramide :: ((Int,Int),Int) -> String
+drawPiramide ((x,y),side)  = let middle = div side 2
+														 in "\n <Transform translation='"++(show x)++" "++(show y)++" 0'> \n <shape> \n <appearance> \n <material diffuseColor = '0.8,0.8,0.8'> \n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '0 0 0,"++ (show side) ++" 0 0,"++(show middle)++" "++ (show side)++" "++ (show (negate middle)) ++ ", "++(show middle)++" "++ (show side) ++" "++(show (negate middle)) ++ "'>\n </coordinate>\n </indexedFaceSet>\n </shape>\n \n <shape>\n <appearance>\n <material diffuseColor = 'blue'>\n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '"++ (show side) ++" 0 "++ (show(negate side)) ++", " ++ (show side) ++" 0 0,"++(show middle)++" "++ (show side) ++" "++(show(negate middle)) ++", "++(show middle)++" "++ (show side) ++" "++(show (negate middle))++"'>\n </coordinate>\n </indexedFaceSet>\n </shape>\n \n <shape>\n <appearance>\n <material diffuseColor = '0.8,0.8,0.8'>\n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '0 0 "++(show (negate side))++", "++ (show side) ++" 0 "++(show (negate side))++","++(show middle)++" "++ (show side) ++" "++(show (negate middle))++","++(show middle)++" "++ (show side)++" "++(show (negate middle))++"'>\n </coordinate>\n </indexedFaceSet>\n </shape>\n \n <shape>\n <appearance>\n <material diffuseColor = 'blue'>\n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '0 0 "++(show (negate side))++", 0 0 0, "++(show middle)++" "++ (show side) ++" "++(show (negate middle))++","++(show middle)++" "++(show side) ++" "++(show (negate middle))++"'>\n </coordinate>\n </indexedFaceSet>\n </shape>\n \n <shape>\n <appearance>\n <material diffuseColor = 'blue'>\n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '0 0 0, 0 0 "++(show (negate side))++", "++ (show side) ++" 0 "++(show (negate side))++", "++ (show side) ++" 0 0'>\n </coordinate>\n </indexedFaceSet> \n </shape> \n </Transform> \n"
+
+
 \end{code}
+
 \pdfout{%
 \begin{code}
 data TLTree a = L a | N (TLTree a,(TLTree a,TLTree a)) deriving (Eq,Show)
@@ -908,14 +971,14 @@ data TLTree a = L a | N (TLTree a,(TLTree a,TLTree a)) deriving (Eq,Show)
 }%
 
 \subsection*{Secção \ref{sec:monads}}
-Defina
+Defina e responda ao problema do enunciado aqui.
 \newline
 \begin{code}
 gene (Left ())= D[(["stop"],0.90),([""],0.10)]
 gene (Right (a,t))= D [([a]++t,0.95), (t,0.05)]
-
 \end{code}
-e responda ao problema do enunciado aqui.
+
+
 
 \begin{Verbatim}
 *Main> transmitir (words "vamos atacar hoje")
