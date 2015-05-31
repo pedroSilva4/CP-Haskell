@@ -17,7 +17,14 @@
 \author{
 		\dium
 \\
-		Universidade do Minho
+		Universidade do Minho\\
+		\\
+    \\
+    Grupo 13\\
+    {\small \texttt{a54718} - Lázaro Tomé Alves Azevedo}\\
+    {\small \texttt{a64296} - André Miguel Vila Cova Ferreira}\\
+    {\small \texttt{a64345} - Pedro Miguel Pereira da Silva}\\
+    \\
 }
 
 
@@ -119,6 +126,7 @@ import X3d
 import Control.Parallel.Strategies
 import Probability hiding (cond)
 import System.Environment( getArgs )
+import Piramide
 \end{code}
 
 \noindent Abra o ficheiro \texttt{cp1415t.lhs} no seu editor de texto preferido
@@ -402,7 +410,8 @@ que se mostra na Figura~\ref{fig:sierp2}.
   \caption{Um \sierp{triângulo de Sierpinski} em x3dom}\label{fig:sierp2}
 \end{figure}
 
-\subsection*{Valorização}
+
+\subsection{Valorização}\label{sec:valorizacao}
 
 Se tiver tempo, investigue como é que a sua resolução desta parte do trabalho
 evolui para o desenho, não de \emph{triângulos} de Sierpinski, mas sim de
@@ -880,26 +889,25 @@ anaTLTree f = inTLTree . (recTLTree (anaTLTree f) ) . f
 hyloTLTree a c = cataTLTree a . anaTLTree c
 \end{code}
 
+A biblioteca TLTree foi obtida por analogia à biblioteca de LeafTree.
+As alterações feitas foram apenas por concordancia com o functor de TLtree.
+
 \begin{code}
 tipsTLTree = cataTLTree (either singl conc)
         where conc(l,(r,t))= l ++ r ++ t
 
 \end{code}
 
+invertTLTree iverte as coordenadas dos pontos nas folhas.
 \begin{code}
-{-
-invTLTree inverte o ponto nas suas coordenadas e mantem os ramos das arvores
--}
 invTLTree = cataTLTree (inTLTree . ( invertPoint -|- id ))
 
 invertPoint :: Tri -> Tri
 invertPoint = ((negate><negate)><(negate))
 \end{code}
 
+invTLTree' iverte os ramos da árvore.
 \begin{code}
-{-
-invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções de inversão para outros tipos de árvore
--}
 invTLTree' = cataTLTree (inTLTree . ( id -|- swapTLTree))
 
 swapTLTree :: (TLTree a,(TLTree b,TLTree c)) -> (TLTree c,(TLTree b,TLTree a))
@@ -952,16 +960,7 @@ countTLTree = cataTLTree (either (const 1) ((uncurry (+)).(id >< (uncurry (+)) )
 draw = render html where
        html = rep dados
 
-rep = finalize. concat. map(drawPiramide) . apresentaSierp.uncurry(geraSierp)
-
-
-
-
-drawPiramide :: ((Int,Int),Int) -> String
-drawPiramide ((x,y),side)  = let middle = div side 2
-														 in "\n <Transform translation='"++(show x)++" "++(show y)++" 0'> \n <shape> \n <appearance> \n <material diffuseColor = '0.8,0.8,0.8'> \n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '0 0 0,"++ (show side) ++" 0 0,"++(show middle)++" "++ (show side)++" "++ (show (negate middle)) ++ ", "++(show middle)++" "++ (show side) ++" "++(show (negate middle)) ++ "'>\n </coordinate>\n </indexedFaceSet>\n </shape>\n \n <shape>\n <appearance>\n <material diffuseColor = 'blue'>\n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '"++ (show side) ++" 0 "++ (show(negate side)) ++", " ++ (show side) ++" 0 0,"++(show middle)++" "++ (show side) ++" "++(show(negate middle)) ++", "++(show middle)++" "++ (show side) ++" "++(show (negate middle))++"'>\n </coordinate>\n </indexedFaceSet>\n </shape>\n \n <shape>\n <appearance>\n <material diffuseColor = '0.8,0.8,0.8'>\n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '0 0 "++(show (negate side))++", "++ (show side) ++" 0 "++(show (negate side))++","++(show middle)++" "++ (show side) ++" "++(show (negate middle))++","++(show middle)++" "++ (show side)++" "++(show (negate middle))++"'>\n </coordinate>\n </indexedFaceSet>\n </shape>\n \n <shape>\n <appearance>\n <material diffuseColor = 'blue'>\n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '0 0 "++(show (negate side))++", 0 0 0, "++(show middle)++" "++ (show side) ++" "++(show (negate middle))++","++(show middle)++" "++(show side) ++" "++(show (negate middle))++"'>\n </coordinate>\n </indexedFaceSet>\n </shape>\n \n <shape>\n <appearance>\n <material diffuseColor = 'blue'>\n </material>\n </appearance>\n <indexedFaceSet coordIndex = '0 1 2 3 1'>\n <coordinate point = '0 0 0, 0 0 "++(show (negate side))++", "++ (show side) ++" 0 "++(show (negate side))++", "++ (show side) ++" 0 0'>\n </coordinate>\n </indexedFaceSet> \n </shape> \n </Transform> \n"
-
-
+rep = finalize. concat. map(drawTriangle) . apresentaSierp.uncurry(geraSierp)
 \end{code}
 
 \pdfout{%
@@ -1007,6 +1006,14 @@ Por fim, a probabilidade da mensagem seguir perfeita é de 77.2\%.
 
 \subsection*{Secção \ref{sec:parBTreeMap}}
 Defina
+\begin{verbatim}
+parBTreeMap :: (a -> b) -> (BTree a) -> Eval (BTree b)
+\end{verbatim}
+e apresente aqui os resultados das suas experiências com essa função.
+ \\
+ \\
+
+Definição :
 \begin{code}
 parBTreeMap f Empty = return Empty
 parBTreeMap f (Node(a,(l,r)) )= do
@@ -1015,9 +1022,90 @@ parBTreeMap f (Node(a,(l,r)) )= do
 								r' <- parBTreeMap f r
 								return (Node (a',(l',r')))
 \end{code}
-e apresente aqui os resultados das suas experiências com essa função.
 
-Com esta função foram feitos diferentes
+\textbf{Testes:}\\
+Com esta função foram feitos diferentes testes. Utilizou-se a arvore abpe(20,30) e abpe(20,40) e, para cada um deles, testou-se a utilização de 2, 4 e 8 cores sequencialmente e em paralelo.
+
+\begin{table}[h]
+\begin{tabular}{lrrr}
+\multicolumn{1}{c}{\textbf{abpe(20,30)}} & \multicolumn{1}{c}{N2 Total Time (Elapsed)} & \multicolumn{1}{c}{N4 Total Time (Elapsed)} & \multicolumn{1}{c}{N8 Total Time (Elapsed)} \\
+Sequencialmente & 1.03s (0.73s) & 1.78s (0.79s) & 4.66s (1.03s) \\
+Paralelo & 0.78s (0.42s) & 1.22s (0.38s) & 2.64s (0.47s)
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\begin{tabular}{lrrr}
+\multicolumn{1}{c}{\textbf{abpe(20,40)}} & \multicolumn{1}{c}{N2 Total Time (Elapsed)} & \multicolumn{1}{c}{N4 Total Time (Elapsed)} & \multicolumn{1}{c}{N8 Total Time (Elapsed)} \\
+Sequencialmente & 125.31s (88.87s) & 219.08s (96.87s) & 570.18s (125.84s) \\
+Paralelo & 94.22s (51.42s) & 141.96s (46.21s) & 318.99s (58.96s)
+\end{tabular}
+\end{table}
+
+\textbf{Conclusões:}\\
+
+Pelos teste realizados ficou evidente que o numero de cores ideal para este problema são 4.
+Após testar com 8 era de esperar que o resultado fosse ainda melhor do que com 4 cores, mas o resultado
+experimental não foi o esperado, o tempo de execução aumentou, isto pode dever-se ao overhead resultante
+dos 8 cores.
+
+\subsection*{Secçao \ref{sec:valorizacao}}
+A função '' draw' '' é a função que permite desenhar a piramide de Sierpinski
+\begin{code}
+draw' = render html where
+       	html = rep2 dados
+
+rep2 = finalize. concat. map(drawPiramide) . apresentaPiramide.anaPLTree(geraPiramideSierp).to3D
+\end{code}
+
+Para a construção da piramide houve a necessidade de criar uma estrutra que a suportasse.
+Partindo da definição de Tri criou-se TriP, uma versao 3d do Triangulo.
+
+\begin{verbatim}
+type PointT = (Int,Int,Int)
+
+type SideT= Int
+
+type TriP = (PointT,SideT)
+\end{verbatim}
+
+Com a nova definição do triangulo chegou-se então à estrutura que suporta a Piramide.
+\begin{verbatim}
+data PLTree a  = P TriP | C (PLTree a,((PLTree a,PLTree a),(PLTree a,PLTree a)))
+\end{verbatim}
+
+Seguindo o modelo usado para o Triangulo desenvolveu-se uma biblioteca de suporte,
+de notar a função que serve de gene ao anamorfismo para a construção da piramide.
+\begin{verbatim}
+geraPiramideSierp :: (TriP,Int) ->
+Either TriP ((TriP,Int),(((TriP,Int),(TriP,Int)),((TriP,Int),(TriP,Int))))
+
+geraPiramideSierp (t,0) = i1 t
+geraPiramideSierp (t,a) = i2
+((inPup t, a-1),( ((leftP t,a-1),(rightP t,a-1)),((frontP t,a-1),(backP t,a-1)) ))
+
+inPup :: TriP -> TriP
+inPup ((a,b,c),d) = ((a,b+size,c),size)
+                        where size = div d 2
+
+leftP :: TriP -> TriP
+leftP ((a,b,c),d) = ((a,b,c-size),size)
+                        where size = div d 2
+
+rightP :: TriP -> TriP
+rightP ((a,b,c),d) = ((a,b,c+size),size)
+                        where size = div d 2
+
+frontP :: TriP -> TriP
+frontP ((a,b,c),d) = ((a+size,b,c),size)
+                        where size = div d 2
+
+backP :: TriP -> TriP
+backP ((a,b,c),d) = ((a-size,b,c),size)
+                        where size = div d 2
+
+\end{verbatim}
+Cada nivel da Piramide contem 5 piramides dentro dela, à semelhança do triangulo de Sierpinski que contem 3 triangulos.
 
 %----------------- Fim do anexo cpm soluções propostas -------------------------%
 

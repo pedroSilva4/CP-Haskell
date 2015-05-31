@@ -404,7 +404,14 @@
 \author{
 		\dium
 \\
-		Universidade do Minho
+		Universidade do Minho\\
+		\\
+    \\
+    Grupo 13\\
+    {\small \texttt{a54718} - Lázaro Tomé Alves Azevedo}\\
+    {\small \texttt{a64296} - André Miguel Vila Cova Ferreira}\\
+    {\small \texttt{a64345} - Pedro Miguel Pereira da Silva}\\
+    \\
 }
 
 
@@ -519,6 +526,8 @@ se ter inserido o seguinte código \Haskell:
 \>[B]{}\mathbf{import}\;\Conid{Probability}\;\Varid{hiding}\;(\mcond{\cdot }{\cdot }{\cdot }){}\<[E]%
 \\
 \>[B]{}\mathbf{import}\;\Conid{\Conid{System}.Environment}\;(\Varid{getArgs}){}\<[E]%
+\\
+\>[B]{}\mathbf{import}\;\Conid{Piramide}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
@@ -914,7 +923,8 @@ que se mostra na Figura~\ref{fig:sierp2}.
   \caption{Um \sierp{triângulo de Sierpinski} em x3dom}\label{fig:sierp2}
 \end{figure}
 
-\subsection*{Valorização}
+
+\subsection{Valorização}\label{sec:valorizacao}
 
 Se tiver tempo, investigue como é que a sua resolução desta parte do trabalho
 evolui para o desenho, não de \emph{triângulos} de Sierpinski, mas sim de
@@ -1277,10 +1287,10 @@ uma melhor distinção entre as duas versões.
 \>[9]{}\Varid{execExer}\mathrel{=}\mcond{\Varid{isPar}}{\Varid{execExerPar}}{\Varid{execExerSeq}}{}\<[E]%
 \\
 \>[6]{}\hsindent{3}{}\<[9]%
-\>[9]{}\Varid{execExempSeq}\mathrel{=}\underline{(\Varid{putStrLn}\comp \Varid{show}\comp (\Varid{fmap}\;\Varid{fib})\mathbin{\$}\Varid{abpe}\;(\mathrm{20},\mathrm{30}))}{}\<[E]%
+\>[9]{}\Varid{execExempSeq}\mathrel{=}\underline{(\Varid{putStrLn}\comp \Varid{show}\comp (\Varid{fmap}\;\Varid{fib})\mathbin{\$}\Varid{abpe}\;(\mathrm{20},\mathrm{40}))}{}\<[E]%
 \\
 \>[6]{}\hsindent{3}{}\<[9]%
-\>[9]{}\Varid{execExempPar}\mathrel{=}\underline{(\Varid{putStrLn}\comp \Varid{show}\comp \Varid{runEval}\comp (\Varid{parBTreeMap}\;\Varid{fib})\mathbin{\$}\Varid{abpe}\;(\mathrm{20},\mathrm{30}))}{}\<[E]%
+\>[9]{}\Varid{execExempPar}\mathrel{=}\underline{(\Varid{putStrLn}\comp \Varid{show}\comp \Varid{runEval}\comp (\Varid{parBTreeMap}\;\Varid{fib})\mathbin{\$}\Varid{abpe}\;(\mathrm{20},\mathrm{40}))}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
@@ -1463,35 +1473,65 @@ outras funções auxiliares que sejam necessárias.
 \subsection*{Secção \ref{sec:SList}}
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{16}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{30}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{66}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{inSList}\mathbin{::}\Conid{Either}\;\Varid{a}\;(\Varid{a1},\Conid{SList}\;\Varid{a1}\;\Varid{a})\to \Conid{SList}\;\Varid{a1}\;\Varid{a}{}\<[E]%
 \\
 \>[B]{}\Varid{inSList}\mathrel{=}\alt{\Conid{Sent}}{\Conid{Cons}}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{outSList}\mathbin{::}\Conid{SList}\;\Varid{b}\;\Varid{a}\to \Conid{Either}\;\Varid{a}\;(\Varid{b},\Conid{SList}\;\Varid{b}\;\Varid{a}){}\<[E]%
 \\
 \>[B]{}\Varid{outSList}\;(\Conid{Sent}\;\Varid{a})\mathrel{=}i_1\;(\Varid{a}){}\<[E]%
 \\
 \>[B]{}\Varid{outSList}\;(\Conid{Cons}\;(\Varid{b},\Varid{sl}))\mathrel{=}i_2\;(\Varid{b},\Varid{sl}){}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{recSList}\;\Varid{g}\mathrel{=}\Varid{id}+(\Varid{id}\times\Varid{g}){}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{anaSList}\mathbin{::}(\Varid{c}\to \Conid{Either}\;\Varid{a}\;(\Varid{b},\Varid{c}))\to \Varid{c}\to \Conid{SList}\;\Varid{b}\;\Varid{a}{}\<[E]%
 \\
 \>[B]{}\Varid{anaSList}\;\Varid{g}\mathrel{=}\Varid{inSList}\comp (\Varid{recSList}\;(\Varid{anaSList}\;\Varid{g}))\comp \Varid{g}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{cataSList}\mathbin{::}(\Conid{Either}\;\Varid{b}\;(\Varid{a},\Varid{d})\to \Varid{d})\to \Conid{SList}\;\Varid{a}\;\Varid{b}\to \Varid{d}{}\<[E]%
 \\
 \>[B]{}\Varid{cataSList}\;\Varid{g}\mathrel{=}\Varid{g}\comp (\Varid{recSList}\;(\Varid{cataSList}\;\Varid{g}))\comp \Varid{outSList}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{16}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{hyloSList}\mathbin{::}(\Conid{Either}\;\Varid{b}\;(\Varid{d},\Varid{c})\to \Varid{c})\to (\Varid{a}\to \Conid{Either}\;\Varid{b}\;(\Varid{d},\Varid{a}))\to \Varid{a}\to \Varid{c}{}\<[E]%
 \\
 \>[B]{}\Varid{hyloSList}\;\Varid{h}\;\Varid{g}{}\<[16]%
 \>[16]{}\mathrel{=}\Varid{cataSList}\;\Varid{h}\comp \Varid{anaSList}\;\Varid{g}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{30}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{66}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{mgen}\mathbin{::}\Conid{Ord}\;\Varid{a}\Rightarrow ([\mskip1.5mu \Varid{a}\mskip1.5mu],[\mskip1.5mu \Varid{a}\mskip1.5mu])\to \Conid{Either}\;[\mskip1.5mu \Varid{a}\mskip1.5mu]\;(\Varid{a},([\mskip1.5mu \Varid{a}\mskip1.5mu],[\mskip1.5mu \Varid{a}\mskip1.5mu])){}\<[E]%
 \\
 \>[B]{}\Varid{mgen}\;(\Varid{l},[\mskip1.5mu \mskip1.5mu])\mathrel{=}i_1\;(\Varid{l}){}\<[E]%
@@ -1510,93 +1550,157 @@ outras funções auxiliares que sejam necessárias.
 
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{8}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{9}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{17}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{20}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{23}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{32}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{41}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{81}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{122}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{124}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{142}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{187}{@{}>{\hspre}c<{\hspost}@{}}%
-\column{187E}{@{}l@{}}%
-\column{196}{@{}>{\hspre}c<{\hspost}@{}}%
-\column{196E}{@{}l@{}}%
-\column{202}{@{}>{\hspre}c<{\hspost}@{}}%
-\column{202E}{@{}l@{}}%
-\column{209}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{217}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{inTLTree}\mathrel{=}\alt{\Conid{L}}{\Conid{N}}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{20}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{outTLTree}\;(\Conid{L}\;\Varid{a}){}\<[20]%
 \>[20]{}\mathrel{=}i_1\;\Varid{a}{}\<[E]%
 \\
 \>[B]{}\Varid{outTLTree}\;(\Conid{N}\;(\Varid{t1},(\Varid{t2},\Varid{t3})))\mathrel{=}i_2\;(\Varid{t1},(\Varid{t2},\Varid{t3})){}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{baseTLTree}\;\Varid{g}\;\Varid{f}\mathrel{=}\Varid{g}+(\Varid{f}\times(\Varid{f}\times\Varid{f})){}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{23}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{recTLTree}\;\Varid{f}\mathrel{=}\Varid{id}+{}\<[23]%
 \>[23]{}(\Varid{f}\times(\Varid{f}\times\Varid{f})){}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{cataTLTree}\;\Varid{a}\mathrel{=}\Varid{a}\comp (\Varid{recTLTree}\;(\Varid{cataTLTree}\;\Varid{a}))\comp \Varid{outTLTree}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{anaTLTree}\;\Varid{f}\mathrel{=}\Varid{inTLTree}\comp (\Varid{recTLTree}\;(\Varid{anaTLTree}\;\Varid{f}))\comp \Varid{f}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{hyloTLTree}\;\Varid{a}\;\Varid{c}\mathrel{=}\Varid{cataTLTree}\;\Varid{a}\comp \Varid{anaTLTree}\;\Varid{c}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+A biblioteca TLTree foi obtida por analogia à biblioteca de LeafTree.
+As alterações feitas foram apenas por concordancia com o functor de TLtree.
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{9}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{tipsTLTree}\mathrel{=}\Varid{cataTLTree}\;\alt{\Varid{singl}}{\mathsf{conc}}{}\<[E]%
 \\
 \>[B]{}\hsindent{9}{}\<[9]%
 \>[9]{}\mathbf{where}\;\mathsf{conc}\;(\Varid{l},(\Varid{r},\Varid{t}))\mathrel{=}\Varid{l}\plus \Varid{r}\plus \Varid{t}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+invertTLTree iverte as coordenadas dos pontos nas folhas.
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{invTLTree}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp (\Varid{invertPoint}+\Varid{id})){}\<[E]%
 \\[\blanklineskip]%
-\>[B]{}\mbox{\commentbegin 
-invTLTree inverte o ponto nas suas coordenadas e mantem os ramos das arvores \commentend}{}\<[E]%
+\>[B]{}\Varid{invertPoint}\mathbin{::}\Conid{Tri}\to \Conid{Tri}{}\<[E]%
+\\
+\>[B]{}\Varid{invertPoint}\mathrel{=}((\Varid{negate}\times\Varid{negate})\times(\Varid{negate})){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+invTLTree' iverte os ramos da árvore.
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{invTLTree'}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp (\Varid{id}+\Varid{swapTLTree})){}\<[E]%
 \\[\blanklineskip]%
-\>[B]{}\Varid{invTLTree}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp ((\lambda ((\Varid{x},\Varid{y}),\Varid{z})\to ((\mathbin{-}\Varid{x},\mathbin{-}\Varid{y}),\mathbin{-}\Varid{z}))+\Varid{id})){}\<[E]%
-\\[\blanklineskip]%
-\>[B]{}\mbox{\commentbegin 
-invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções de inversão para outros tipos de árvore \commentend}{}\<[E]%
-\\[\blanklineskip]%
-\>[B]{}\Varid{invTLTree'}\mathrel{=}\Varid{cataTLTree}\;(\Varid{inTLTree}\comp (\Varid{id}+(\lambda (\Varid{a},(\Varid{b},\Varid{c}))\to (\Varid{c},(\Varid{b},\Varid{a}))))){}\<[E]%
-\\[\blanklineskip]%
+\>[B]{}\Varid{swapTLTree}\mathbin{::}(\mathsf{TLTree}\;\Varid{a},(\mathsf{TLTree}\;\Varid{b},\mathsf{TLTree}\;\Varid{c}))\to (\mathsf{TLTree}\;\Varid{c},(\mathsf{TLTree}\;\Varid{b},\mathsf{TLTree}\;\Varid{a})){}\<[E]%
+\\
+\>[B]{}\Varid{swapTLTree}\;(\Varid{a},(\Varid{c},\Varid{d}))\mathrel{=}(\Varid{d},(\Varid{c},\Varid{a})){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{depthTLTree}\mathrel{=}\Varid{cataTLTree}\;\alt{\underline{\mathrm{1}}}{\Varid{succ}\comp \uncurry{\Varid{max}}\comp (\Varid{id}\times\uncurry{\Varid{max}})}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{26}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{43}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{82}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{98}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{105}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{geraSierp}\mathbin{::}\Conid{Tri}\to \Conid{Int}\to \mathsf{TLTree}\;\Conid{Tri}{}\<[E]%
 \\
 \>[B]{}\Varid{geraSierp}\mathrel{=}\Varid{curry}\;(\Varid{anaTLTree}\;(\Varid{geraSierpinPair})){}\<[E]%
 \\[\blanklineskip]%
-\>[B]{}\Varid{geraSierpinPair}\mathbin{::}(\Conid{Tri},\Conid{Int})\to \Conid{Either}\;\Conid{Tri}\;(((\Conid{Tri},\Conid{Int})),(((\Conid{Tri},\Conid{Int})),((\Conid{Tri},\Conid{Int})))){}\<[E]%
+\>[B]{}\Varid{geraSierpinPair}\mathbin{::}(\Conid{Tri},\Conid{Int})\to \Conid{Either}\;\Conid{Tri}\;((\Conid{Tri},\Conid{Int}),((\Conid{Tri},\Conid{Int}),(\Conid{Tri},\Conid{Int}))){}\<[E]%
 \\
-\>[B]{}\Varid{geraSierpinPair}\;(((\Varid{x},\Varid{y}),\Varid{z}),\Varid{a}){}\<[32]%
-\>[32]{}\mid \Varid{a}\equiv \mathrm{0}{}\<[41]%
-\>[41]{}\mathrel{=}i_1\;((\Varid{x},\Varid{y}),\Varid{z}){}\<[E]%
-\\
-\>[41]{}\hsindent{81}{}\<[122]%
-\>[122]{}\mid \Varid{otherwise}\mathrel{=}i_2\;({}\<[142]%
-\>[142]{}(((\Varid{x},\Varid{y}),\Varid{h}),(\Varid{a}\mathbin{-}\mathrm{1})),{}\<[E]%
-\\
-\>[142]{}\hsindent{54}{}\<[196]%
-\>[196]{}({}\<[196E]%
-\\
-\>[196]{}\hsindent{21}{}\<[217]%
-\>[217]{}(((\Varid{x}\mathbin{+}\Varid{h},\Varid{y}),\Varid{h}),(\Varid{a}\mathbin{-}\mathrm{1})),{}\<[E]%
-\\
-\>[196]{}\hsindent{13}{}\<[209]%
-\>[209]{}(((\Varid{x},\Varid{y}\mathbin{+}\Varid{h}),\Varid{h}),(\Varid{a}\mathbin{-}\mathrm{1})){}\<[E]%
-\\
-\>[196]{}\hsindent{6}{}\<[202]%
-\>[202]{}){}\<[202E]%
-\\
-\>[142]{}\hsindent{45}{}\<[187]%
-\>[187]{}){}\<[187E]%
-\\
-\>[122]{}\hsindent{2}{}\<[124]%
-\>[124]{}\mathbf{where}\;\Varid{h}\mathrel{=}(\Varid{quot}\;\Varid{z}\;\mathrm{2}){}\<[E]%
+\>[B]{}\Varid{geraSierpinPair}\mathrel{=}\mcond{((\equiv \mathrm{0})\comp \p2)}{(i_1\comp \p1)}{(i_2\comp \Varid{geraRec})}{}\<[E]%
 \\[\blanklineskip]%
+\>[B]{}\Varid{geraRec}\mathbin{::}(\Conid{Tri},\Conid{Int})\to ((\Conid{Tri},\Conid{Int}),((\Conid{Tri},\Conid{Int}),(\Conid{Tri},\Conid{Int}))){}\<[E]%
+\\
+\>[B]{}\Varid{geraRec}\;(\Varid{t},\Varid{a})\mathrel{=}((\Varid{decSize}\;\Varid{t},\Varid{a}\mathbin{-}\mathrm{1}),((\Varid{decAndxMove}\;\Varid{t},\Varid{a}\mathbin{-}\mathrm{1}),(\Varid{decAndyMove}\;\Varid{t},\Varid{a}\mathbin{-}\mathrm{1}))){}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{decSize}\mathbin{::}\Conid{Tri}\to \Conid{Tri}{}\<[E]%
+\\
+\>[B]{}\Varid{decSize}\;((\Varid{a},\Varid{b}),\Varid{c})\mathrel{=}((\Varid{a},\Varid{b}),\Varid{dec}){}\<[E]%
+\\
+\>[B]{}\hsindent{82}{}\<[82]%
+\>[82]{}\mathbf{where}\;\Varid{dec}\mathrel{=}\Varid{quot}\;\Varid{c}\;\mathrm{2}{}\<[E]%
+\\
+\>[B]{}\Varid{decAndxMove}\mathbin{::}\Conid{Tri}\to \Conid{Tri}{}\<[E]%
+\\
+\>[B]{}\Varid{decAndxMove}\;((\Varid{a},\Varid{b}),\Varid{c})\mathrel{=}{}\<[26]%
+\>[26]{}((\Varid{a}\mathbin{+}\Varid{dec},\Varid{b}),\Varid{dec}){}\<[E]%
+\\
+\>[26]{}\hsindent{79}{}\<[105]%
+\>[105]{}\mathbf{where}\;\Varid{dec}\mathrel{=}\Varid{quot}\;\Varid{c}\;\mathrm{2}{}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{decAndyMove}\mathbin{::}\Conid{Tri}\to \Conid{Tri}{}\<[E]%
+\\
+\>[B]{}\Varid{decAndyMove}\;((\Varid{a},\Varid{b}),\Varid{c})\mathrel{=}{}\<[26]%
+\>[26]{}((\Varid{a},\Varid{b}\mathbin{+}\Varid{dec}),{}\<[43]%
+\>[43]{}\Varid{dec}){}\<[E]%
+\\
+\>[43]{}\hsindent{55}{}\<[98]%
+\>[98]{}\mathbf{where}\;\Varid{dec}\mathrel{=}\Varid{quot}\;\Varid{c}\;\mathrm{2}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{17}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{81}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{apresentaSierp}\mathbin{::}\mathsf{TLTree}\;\Conid{Tri}\to [\mskip1.5mu \Conid{Tri}\mskip1.5mu]{}\<[E]%
 \\
 \>[B]{}\Varid{apresentaSierp}{}\<[17]%
@@ -1604,11 +1708,22 @@ invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções 
 \\
 \>[17]{}\hsindent{64}{}\<[81]%
 \>[81]{}\mathbf{where}\;\mathsf{conc}\;(\Varid{l},(\Varid{r},\Varid{t}))\mathrel{=}\Varid{l}\plus \Varid{r}\plus \Varid{t}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{countTLTree}\mathbin{::}\mathsf{TLTree}\;\Varid{b}\to \Conid{Int}{}\<[E]%
 \\
 \>[B]{}\Varid{countTLTree}\mathrel{=}\Varid{cataTLTree}\;\alt{\underline{\mathrm{1}}}{\uncurry{(\mathbin{+})}\comp (\Varid{id}\times\uncurry{(\mathbin{+})})}{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{8}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{draw}\mathrel{=}\Varid{render}\;\Varid{html}\;\mathbf{where}{}\<[E]%
 \\
 \>[B]{}\hsindent{8}{}\<[8]%
@@ -1617,6 +1732,7 @@ invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções 
 \>[B]{}\Varid{rep}\mathrel{=}\Varid{finalize}\comp \Varid{concat}\comp \Varid{map}\;(\Varid{drawTriangle})\comp \Varid{apresentaSierp}\comp \uncurry{(\Varid{geraSierp})}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
+
 \pdfout{%
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
@@ -1627,7 +1743,7 @@ invTLTree' inverte apenas os ramos da arvore a semelhança das outras funções 
 }%
 
 \subsection*{Secção \ref{sec:monads}}
-Defina
+Defina e responda ao problema do enunciado aqui.
 \newline
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
@@ -1637,7 +1753,8 @@ Defina
 \>[B]{}\Varid{gene}\;(i_2\;(\Varid{a},\Varid{t}))\mathrel{=}\Conid{D}\;[\mskip1.5mu ([\mskip1.5mu \Varid{a}\mskip1.5mu]\plus \Varid{t},\mathrm{0.95}),(\Varid{t},\mathrm{0.05})\mskip1.5mu]{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
-e responda ao problema do enunciado aqui.
+
+
 
 \begin{Verbatim}
 *Main> transmitir (words "vamos atacar hoje")
@@ -1666,6 +1783,14 @@ Por fim, a probabilidade da mensagem seguir perfeita é de 77.2\%.
 
 \subsection*{Secção \ref{sec:parBTreeMap}}
 Defina
+\begin{tabbing}\tt
+~parBTreeMap~\char58{}\char58{}~\char40{}a~\char45{}\char62{}~b\char41{}~\char45{}\char62{}~\char40{}BTree~a\char41{}~\char45{}\char62{}~Eval~\char40{}BTree~b\char41{}
+\end{tabbing}
+e apresente aqui os resultados das suas experiências com essa função.
+ \\
+ \\
+
+Definição :
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{65}{@{}>{\hspre}l<{\hspost}@{}}%
@@ -1687,9 +1812,95 @@ Defina
 \>[65]{}\Varid{return}\;(\Conid{Node}\;(\Varid{a'},(\Varid{l'},\Varid{r'}))){}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
-e apresente aqui os resultados das suas experiências com essa função.
 
-Com esta função foram feitos diferentes
+\textbf{Testes:}\\
+Com esta função foram feitos diferentes testes. Utilizou-se a arvore abpe(20,30) e abpe(20,40) e, para cada um deles, testou-se a utilização de 2, 4 e 8 cores sequencialmente e em paralelo.
+
+\begin{table}[h]
+\begin{tabular}{lrrr}
+\multicolumn{1}{c}{\textbf{abpe(20,30)}} & \multicolumn{1}{c}{N2 Total Time (Elapsed)} & \multicolumn{1}{c}{N4 Total Time (Elapsed)} & \multicolumn{1}{c}{N8 Total Time (Elapsed)} \\
+Sequencialmente & 1.03s (0.73s) & 1.78s (0.79s) & 4.66s (1.03s) \\
+Paralelo & 0.78s (0.42s) & 1.22s (0.38s) & 2.64s (0.47s)
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\begin{tabular}{lrrr}
+\multicolumn{1}{c}{\textbf{abpe(20,40)}} & \multicolumn{1}{c}{N2 Total Time (Elapsed)} & \multicolumn{1}{c}{N4 Total Time (Elapsed)} & \multicolumn{1}{c}{N8 Total Time (Elapsed)} \\
+Sequencialmente & 125.31s (88.87s) & 219.08s (96.87s) & 570.18s (125.84s) \\
+Paralelo & 94.22s (51.42s) & 141.96s (46.21s) & 318.99s (58.96s)
+\end{tabular}
+\end{table}
+
+\textbf{Conclusões:}\\
+
+Pelos teste realizados ficou evidente que o numero de cores ideal para este problema são 4.
+Após testar com 8 era de esperar que o resultado fosse ainda melhor do que com 4 cores, mas o resultado
+experimental não foi o esperado, o tempo de execução aumentou, isto pode dever-se ao overhead resultante
+dos 8 cores.
+
+\subsection*{Secçao \ref{sec:valorizacao}}
+A função '' draw' '' é a função que permite desenhar a piramide de Sierpinski
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{9}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{draw'}\mathrel{=}\Varid{render}\;\Varid{html}\;\mathbf{where}{}\<[E]%
+\\
+\>[B]{}\hsindent{9}{}\<[9]%
+\>[9]{}\Varid{html}\mathrel{=}\Varid{rep2}\;\Varid{dados}{}\<[E]%
+\\[\blanklineskip]%
+\>[B]{}\Varid{rep2}\mathrel{=}\Varid{finalize}\comp \Varid{concat}\comp \Varid{map}\;(\Varid{drawPiramide})\comp \Varid{apresentaPiramide}\comp \Varid{anaPLTree}\;(\Varid{geraPiramideSierp})\comp \Varid{to3D}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Para a construção da piramide houve a necessidade de criar uma estrutra que a suportasse.
+Partindo da definição de Tri criou-se TriP, uma versao 3d do Triangulo.
+
+\begin{tabbing}\tt
+~type~PointT~\char61{}~\char40{}Int\char44{}Int\char44{}Int\char41{}\\
+\tt ~\\
+\tt ~type~SideT\char61{}~Int\\
+\tt ~\\
+\tt ~type~TriP~\char61{}~\char40{}PointT\char44{}SideT\char41{}
+\end{tabbing}
+
+Com a nova definição do triangulo chegou-se então à estrutura que suporta a Piramide.
+\begin{tabbing}\tt
+~data~PLTree~a~~\char61{}~P~TriP~\char124{}~C~\char40{}PLTree~a\char44{}\char40{}\char40{}PLTree~a\char44{}PLTree~a\char41{}\char44{}\char40{}PLTree~a\char44{}PLTree~a\char41{}\char41{}\char41{}
+\end{tabbing}
+
+Seguindo o modelo usado para o Triangulo desenvolveu-se uma biblioteca de suporte,
+de notar a função que serve de gene ao anamorfismo para a construção da piramide.
+\begin{tabbing}\tt
+~geraPiramideSierp~\char58{}\char58{}~\char40{}TriP\char44{}Int\char41{}~\char45{}\char62{}\\
+\tt ~Either~TriP~\char40{}\char40{}TriP\char44{}Int\char41{}\char44{}\char40{}\char40{}\char40{}TriP\char44{}Int\char41{}\char44{}\char40{}TriP\char44{}Int\char41{}\char41{}\char44{}\char40{}\char40{}TriP\char44{}Int\char41{}\char44{}\char40{}TriP\char44{}Int\char41{}\char41{}\char41{}\char41{}\\
+\tt ~\\
+\tt ~geraPiramideSierp~\char40{}t\char44{}0\char41{}~\char61{}~i1~t\\
+\tt ~geraPiramideSierp~\char40{}t\char44{}a\char41{}~\char61{}~i2\\
+\tt ~\char40{}\char40{}inPup~t\char44{}~a\char45{}1\char41{}\char44{}\char40{}~\char40{}\char40{}leftP~t\char44{}a\char45{}1\char41{}\char44{}\char40{}rightP~t\char44{}a\char45{}1\char41{}\char41{}\char44{}\char40{}\char40{}frontP~t\char44{}a\char45{}1\char41{}\char44{}\char40{}backP~t\char44{}a\char45{}1\char41{}\char41{}~\char41{}\char41{}\\
+\tt ~\\
+\tt ~inPup~\char58{}\char58{}~TriP~\char45{}\char62{}~TriP\\
+\tt ~inPup~\char40{}\char40{}a\char44{}b\char44{}c\char41{}\char44{}d\char41{}~\char61{}~\char40{}\char40{}a\char44{}b\char43{}size\char44{}c\char41{}\char44{}size\char41{}\\
+\tt ~~~~~~~~~~~~~~~~~~~~~~~~~where~size~\char61{}~div~d~2\\
+\tt ~\\
+\tt ~leftP~\char58{}\char58{}~TriP~\char45{}\char62{}~TriP\\
+\tt ~leftP~\char40{}\char40{}a\char44{}b\char44{}c\char41{}\char44{}d\char41{}~\char61{}~\char40{}\char40{}a\char44{}b\char44{}c\char45{}size\char41{}\char44{}size\char41{}\\
+\tt ~~~~~~~~~~~~~~~~~~~~~~~~~where~size~\char61{}~div~d~2\\
+\tt ~\\
+\tt ~rightP~\char58{}\char58{}~TriP~\char45{}\char62{}~TriP\\
+\tt ~rightP~\char40{}\char40{}a\char44{}b\char44{}c\char41{}\char44{}d\char41{}~\char61{}~\char40{}\char40{}a\char44{}b\char44{}c\char43{}size\char41{}\char44{}size\char41{}\\
+\tt ~~~~~~~~~~~~~~~~~~~~~~~~~where~size~\char61{}~div~d~2\\
+\tt ~\\
+\tt ~frontP~\char58{}\char58{}~TriP~\char45{}\char62{}~TriP\\
+\tt ~frontP~\char40{}\char40{}a\char44{}b\char44{}c\char41{}\char44{}d\char41{}~\char61{}~\char40{}\char40{}a\char43{}size\char44{}b\char44{}c\char41{}\char44{}size\char41{}\\
+\tt ~~~~~~~~~~~~~~~~~~~~~~~~~where~size~\char61{}~div~d~2\\
+\tt ~\\
+\tt ~backP~\char58{}\char58{}~TriP~\char45{}\char62{}~TriP\\
+\tt ~backP~\char40{}\char40{}a\char44{}b\char44{}c\char41{}\char44{}d\char41{}~\char61{}~\char40{}\char40{}a\char45{}size\char44{}b\char44{}c\char41{}\char44{}size\char41{}\\
+\tt ~~~~~~~~~~~~~~~~~~~~~~~~~where~size~\char61{}~div~d~2
+\end{tabbing}
+Cada nivel da Piramide contem 5 piramides dentro dela, à semelhança do triangulo de Sierpinski que contem 3 triangulos.
 
 %----------------- Fim do anexo cpm soluções propostas -------------------------%
 
